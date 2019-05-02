@@ -1,4 +1,4 @@
-package com.github.mouse0w0.mycef.example;
+package example;
 
 import com.github.mouse0w0.mycef.api.MyCEF;
 import org.cef.browser.CefBrowser;

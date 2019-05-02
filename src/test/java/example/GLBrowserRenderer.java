@@ -1,16 +1,13 @@
-package com.github.mouse0w0.mycef.example;
+package example;
 
 import com.github.mouse0w0.mycef.api.BrowserRenderer;
 import org.cef.browser.CefBrowser;
 
 import java.awt.*;
 import java.nio.ByteBuffer;
-import java.util.Queue;
 
 import static org.lwjgl.opengl.EXTBGRA.GL_BGRA_EXT;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL12.GL_BGRA;
-import static org.lwjgl.opengl.GL12.GL_UNSIGNED_INT_8_8_8_8_REV;
 
 public class GLBrowserRenderer implements BrowserRenderer {
 

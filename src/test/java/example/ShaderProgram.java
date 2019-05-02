@@ -1,9 +1,6 @@
-package com.github.mouse0w0.mycef.example;
+package example;
 
 import org.joml.Matrix4fc;
-import org.joml.Vector2fc;
-import org.joml.Vector3fc;
-import org.joml.Vector4fc;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.system.MemoryStack;
 

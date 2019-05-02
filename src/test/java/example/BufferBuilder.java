@@ -1,4 +1,4 @@
-package com.github.mouse0w0.mycef.example;
+package example;
 
 import org.joml.Vector3fc;
 import org.lwjgl.BufferUtils;

@@ -1,6 +1,5 @@
-package com.github.mouse0w0.mycef.example;
+package example;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
