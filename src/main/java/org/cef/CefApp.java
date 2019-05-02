@@ -133,18 +133,16 @@ public class CefApp extends CefAppHandlerAdapter {
     private CefApp(String[] args, CefSettings settings) throws UnsatisfiedLinkError {
         super(args);
         if (settings != null) settings_ = settings.clone();
-        // ===== MyCEF begin =====
-//        if (OS.isWindows()) {
-//            System.loadLibrary("jawt");
-//            System.loadLibrary("chrome_elf");
-//            System.loadLibrary("libcef");
-//
-//            // Other platforms load this library in CefApp.startup().
-//            System.loadLibrary("jcef");
-//        } else if (OS.isLinux()) {
-//            System.loadLibrary("cef");
-//        }
-        // ===== MyCEF end =====
+        if (OS.isWindows()) {
+            System.loadLibrary("jawt");
+            System.loadLibrary("chrome_elf");
+            System.loadLibrary("libcef");
+
+            // Other platforms load this library in CefApp.startup().
+            System.loadLibrary("jcef");
+        } else if (OS.isLinux()) {
+            System.loadLibrary("cef");
+        }
         if (appHandler_ == null) {
             appHandler_ = this;
         }

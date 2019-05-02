@@ -3,7 +3,6 @@ package com.github.mouse0w0.mycef.api;
 import org.cef.CefApp;
 import org.cef.CefClient;
 import org.cef.CefSettings;
-import org.cef.OS;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefRequestContext;
 
@@ -32,17 +31,6 @@ public final class MyCEF {
         try {
             if (cefLibraryPath != null) {
                 injectJavaLibraryPath(cefLibraryPath);
-            }
-
-            if (OS.isWindows()) {
-                System.loadLibrary("jawt");
-                System.loadLibrary("chrome_elf");
-                System.loadLibrary("libcef");
-
-                // Other platforms load this library in CefApp.startup().
-                System.loadLibrary("jcef");
-            } else if (OS.isLinux()) {
-                System.loadLibrary("cef");
             }
 
             CefSettings cefSettings = new CefSettings();
