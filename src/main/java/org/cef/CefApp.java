@@ -133,16 +133,18 @@ public class CefApp extends CefAppHandlerAdapter {
     private CefApp(String[] args, CefSettings settings) throws UnsatisfiedLinkError {
         super(args);
         if (settings != null) settings_ = settings.clone();
-        if (OS.isWindows()) {
-            System.loadLibrary("jawt");
-            System.loadLibrary("chrome_elf");
-            System.loadLibrary("libcef");
-
-            // Other platforms load this library in CefApp.startup().
-            System.loadLibrary("jcef");
-        } else if (OS.isLinux()) {
-            System.loadLibrary("cef");
-        }
+        // ===== MyCEF begin =====
+//        if (OS.isWindows()) {
+//            System.loadLibrary("jawt");
+//            System.loadLibrary("chrome_elf");
+//            System.loadLibrary("libcef");
+//
+//            // Other platforms load this library in CefApp.startup().
+//            System.loadLibrary("jcef");
+//        } else if (OS.isLinux()) {
+//            System.loadLibrary("cef");
+//        }
+        // ===== MyCEF end =====
         if (appHandler_ == null) {
             appHandler_ = this;
         }
@@ -467,8 +469,6 @@ public class CefApp extends CefAppHandlerAdapter {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                if (getState() == CefAppState.TERMINATED) return;
-
                 // The maximum number of milliseconds we're willing to wait between
                 // calls to DoMessageLoopWork().
                 final long kMaxTimerDelay = 1000 / 30; // 30fps
@@ -478,7 +478,11 @@ public class CefApp extends CefAppHandlerAdapter {
                     workTimer_ = null;
                 }
 
+                if (getState() == CefAppState.TERMINATED || getState() == CefAppState.SHUTTING_DOWN) return;
+
                 if (delay_ms <= 0) {
+                    if (getState() == CefAppState.TERMINATED || getState() == CefAppState.SHUTTING_DOWN) return;
+
                     // Execute the work immediately.
                     N_DoMessageLoopWork();
 
@@ -495,6 +499,8 @@ public class CefApp extends CefAppHandlerAdapter {
                             // Timer has timed out.
                             workTimer_.stop();
                             workTimer_ = null;
+
+                            if (getState() == CefAppState.TERMINATED || getState() == CefAppState.SHUTTING_DOWN) return;
 
                             N_DoMessageLoopWork();
 

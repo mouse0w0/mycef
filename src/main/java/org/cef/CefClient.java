@@ -531,13 +531,14 @@ public class CefClient extends CefClientHandler
                 for (CefBrowser browser : browserList) {
                     browser.close(true);
                 }
-                return;
             }
 
             if (browser_.isEmpty() && isDisposed_) {
-                KeyboardFocusManager.
-                        getCurrentKeyboardFocusManager()
-                        .removePropertyChangeListener(propertyChangeListener);
+                // ===== MyCEF begin =====
+//                KeyboardFocusManager.
+//                        getCurrentKeyboardFocusManager()
+//                        .removePropertyChangeListener(propertyChangeListener);
+                // ===== MyCEF end =====
                 removeContextMenuHandler(this);
                 removeDialogHandler(this);
                 removeDisplayHandler(this);
