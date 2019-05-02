@@ -1,0 +1,5 @@
+rootProject.name = 'mycef'
+include 'mycefgradle'
+include 'Downloader'
+findProject(':Downloader')?.name = 'downloader'
+
