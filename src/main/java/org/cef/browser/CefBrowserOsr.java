@@ -45,7 +45,8 @@ class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler {
 //        renderer_ = new CefRenderer(transparent);
         renderer_ = renderer;
         renderer_.init(this);
-        createBrowserIfRequired(false);
+        createBrowser(getClient(), 0, getUrl(), true, false, null,
+                getRequestContext());
 //        createGLCanvas();
         // ===== MyCEF end =====
     }

@@ -8,7 +8,7 @@ import org.cef.callback.CefSchemeHandlerFactory;
 import org.cef.handler.CefAppHandler;
 import org.cef.handler.CefAppHandlerAdapter;
 
-import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;

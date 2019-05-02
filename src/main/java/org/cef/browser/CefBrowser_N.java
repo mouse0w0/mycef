@@ -4,32 +4,20 @@
 
 package org.cef.browser;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.Canvas;
-import java.awt.Component;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Window;
-import java.awt.event.WindowEvent;
-import java.util.Vector;
-
-import javax.swing.SwingUtilities;
-
 import org.cef.CefClient;
-import org.cef.browser.CefRequestContext;
-import org.cef.callback.CefDragData;
-import org.cef.callback.CefNativeAdapter;
-import org.cef.callback.CefPdfPrintCallback;
-import org.cef.callback.CefRunFileDialogCallback;
-import org.cef.callback.CefStringVisitor;
+import org.cef.callback.*;
 import org.cef.handler.CefClientHandler;
-import org.cef.handler.CefRenderHandler;
 import org.cef.handler.CefDialogHandler.FileDialogMode;
+import org.cef.handler.CefRenderHandler;
 import org.cef.handler.CefWindowHandler;
 import org.cef.misc.CefPdfPrintSettings;
 import org.cef.network.CefRequest;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.util.Vector;
 
 /**
  * This class represents all methods which are connected to the
@@ -104,17 +92,19 @@ abstract class CefBrowser_N extends CefNativeAdapter implements CefBrowser {
             return false;
         }
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // Trigger close of the parent window.
-                Component parent = SwingUtilities.getRoot(getUIComponent());
-                if (parent != null) {
-                    parent.dispatchEvent(
-                            new WindowEvent((Window) parent, WindowEvent.WINDOW_CLOSING));
-                }
-            }
-        });
+        // ===== MyCEF begin =====
+//        SwingUtilities.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                // Trigger close of the parent window.
+//                Component parent = SwingUtilities.getRoot(getUIComponent());
+//                if (parent != null) {
+//                    parent.dispatchEvent(
+//                            new WindowEvent((Window) parent, WindowEvent.WINDOW_CLOSING));
+//                }
+//            }
+//        });
+        // ===== MyCEF end =====
 
         // Cancel the close.
         return true;
