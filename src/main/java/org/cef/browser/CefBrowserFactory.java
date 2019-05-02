@@ -12,8 +12,8 @@ import org.cef.CefClient;
  */
 public class CefBrowserFactory {
     // ===== MyCEF begin =====
-    public static CefBrowser create(CefClient client, String url, BrowserRenderer renderer, CefRequestContext context) {
-        return new CefBrowserOsr(client, url, renderer, context);
+    public static CefBrowser create(CefClient client, String url, boolean isTransparent, BrowserRenderer renderer, CefRequestContext context) {
+        return new CefBrowserOsr(client, url, isTransparent, renderer, context);
     }
 
 //    public static CefBrowser create(CefClient client, String url, boolean isOffscreenRendered,

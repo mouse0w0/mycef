@@ -8,7 +8,7 @@ import org.cef.callback.CefSchemeHandlerFactory;
 import org.cef.handler.CefAppHandler;
 import org.cef.handler.CefAppHandlerAdapter;
 
-import javax.swing.Timer;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -148,24 +148,22 @@ public class CefApp extends CefAppHandlerAdapter {
         }
 
         // Execute on the AWT event dispatching thread.
-        // ===== MyCEF begin =====
-//        try {
-//            Runnable r = new Runnable() {
-//                @Override
-//                public void run() {
+        try {
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
                     // Perform native pre-initialization.
                     if (!N_PreInitialize())
                         throw new IllegalStateException("Failed to pre-initialize native code");
-//                }
-//            };
-//            if (SwingUtilities.isEventDispatchThread())
-//                r.run();
-//            else
-//                SwingUtilities.invokeAndWait(r);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        // ===== MyCEF end =====
+                }
+            };
+            if (SwingUtilities.isEventDispatchThread())
+                r.run();
+            else
+                SwingUtilities.invokeAndWait(r);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -250,14 +248,12 @@ public class CefApp extends CefAppHandlerAdapter {
             state_ = state;
         }
         // Execute on the AWT event dispatching thread.
-        // ===== MyCEF begin =====
-//        SwingUtilities.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
                 if (appHandler_ != null) appHandler_.stateHasChanged(state);
-//            }
-//        });
-        // ===== MyCEF end =====
+            }
+        });
     }
 
     /**
@@ -379,11 +375,10 @@ public class CefApp extends CefAppHandlerAdapter {
      */
     private final void initialize() {
         // Execute on the AWT event dispatching thread.
-        // =====  =====
         try {
-//            Runnable r = new Runnable() {
-//                @Override
-//                public void run() {
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
                     String library_path = getJcefLibPath();
                     System.out.println("initialize on " + Thread.currentThread()
                             + " with library path " + library_path);
@@ -413,14 +408,13 @@ public class CefApp extends CefAppHandlerAdapter {
 
                     if (N_Initialize(library_path, appHandler_, settings))
                         setState(CefAppState.INITIALIZED);
-//                }
-//            };
+                }
+            };
 
-//            if (SwingUtilities.isEventDispatchThread())
-//                r.run();
-//            else
-//                SwingUtilities.invokeAndWait(r);
-            // ===== MyCEF end =====
+            if (SwingUtilities.isEventDispatchThread())
+                r.run();
+            else
+                SwingUtilities.invokeAndWait(r);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -434,16 +428,14 @@ public class CefApp extends CefAppHandlerAdapter {
         System.out.println("Cmd+Q termination request.");
         // Execute on the AWT event dispatching thread. Always call asynchronously
         // so the call stack has a chance to unwind.
-        // ===== MyCEF begin =====
-//        SwingUtilities.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
                 CefAppHandler handler =
                         (CefAppHandler) ((appHandler_ == null) ? this : appHandler_);
                 if (!handler.onBeforeTerminate()) dispose();
-//            }
-//        });
-        // ===== MyCEF end =====
+            }
+        });
     }
 
     /**
@@ -452,20 +444,18 @@ public class CefApp extends CefAppHandlerAdapter {
     private final void shutdown() {
         // Execute on the AWT event dispatching thread. Always call asynchronously
         // so the call stack has a chance to unwind.
-        // ===== MyCEF begin =====
-//        SwingUtilities.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                System.out.println("shutdown on " + Thread.currentThread());
-//
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("shutdown on " + Thread.currentThread());
+
                 // Shutdown native CEF.
                 N_Shutdown();
 
                 setState(CefAppState.TERMINATED);
                 CefApp.self = null;
-//            }
-//        });
-        // ===== MyCEF end =====
+            }
+        });
     }
 
     /**
@@ -474,10 +464,9 @@ public class CefApp extends CefAppHandlerAdapter {
      */
     public final void doMessageLoopWork(final long delay_ms) {
         // Execute on the AWT event dispatching thread.
-        // ===== MyCEF begin =====
-//        SwingUtilities.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
                 if (getState() == CefAppState.TERMINATED) return;
 
                 // The maximum number of milliseconds we're willing to wait between
@@ -515,9 +504,8 @@ public class CefApp extends CefAppHandlerAdapter {
                     });
                     workTimer_.start();
                 }
-//            }
-//        });
-        // ===== MyCEF end =====
+            }
+        });
     }
 
     /**

@@ -56,7 +56,7 @@ public class OpenGLExample {
 
         GLBrowserRenderer glBrowserRenderer = new GLBrowserRenderer();
 
-        cefBrowser = MyCEF.createBrowser("localhost", glBrowserRenderer, null);
+        cefBrowser = MyCEF.createBrowser("https://www.baidu.com", false, glBrowserRenderer, null);
         cefBrowser.resize(1280, 720);
 
         glViewport(0, 0, 1280, 720);

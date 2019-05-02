@@ -22,8 +22,8 @@ public final class MyCEF {
         cefLibraryPath = path;
     }
 
-    public static CefBrowser createBrowser(String url, BrowserRenderer renderer, CefRequestContext context) {
-        return cefClient.createBrowser(url, renderer, context);
+    public static CefBrowser createBrowser(String url, boolean isTransparent, BrowserRenderer renderer, CefRequestContext context) {
+        return cefClient.createBrowser(url, isTransparent, renderer, context);
     }
 
     public static synchronized void init() {

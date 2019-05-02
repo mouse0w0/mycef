@@ -28,24 +28,21 @@ class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler {
     // ===== MyCEF end =====
     private Rectangle browser_rect_ = new Rectangle(0, 0, 1, 1); // Work around CEF issue #1437.
     private Point screenPoint_ = new Point(0, 0);
-    // ===== MyCEF begin =====
-//    private boolean isTransparent_;
-    // ===== MyCEF end =====
+    private boolean isTransparent_;
 
-
-    CefBrowserOsr(CefClient client, String url, BrowserRenderer renderer, CefRequestContext context) {
-        this(client, url, renderer, context, null, null);
+    CefBrowserOsr(CefClient client, String url, boolean transparent, BrowserRenderer renderer, CefRequestContext context) {
+        this(client, url, transparent, renderer, context, null, null);
     }
 
-    private CefBrowserOsr(CefClient client, String url, BrowserRenderer renderer,
+    private CefBrowserOsr(CefClient client, String url, boolean transparent, BrowserRenderer renderer,
                           CefRequestContext context, CefBrowserOsr parent, Point inspectAt) {
         super(client, url, context, parent, inspectAt);
+        isTransparent_ = transparent;
         // ===== MyCEF begin =====
-//        isTransparent_ = transparent;
 //        renderer_ = new CefRenderer(transparent);
         renderer_ = renderer;
         renderer_.init(this);
-        createBrowser(getClient(), 0, getUrl(), true, false, null,
+        createBrowser(getClient(), 0, getUrl(), true, isTransparent_, null,
                 getRequestContext());
 //        createGLCanvas();
         // ===== MyCEF end =====
@@ -290,20 +287,14 @@ class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler {
         }
 
         if (getNativeRef("CefBrowser") == 0) {
-            // ===== MyCEF begin =====
             if (getParentBrowser() != null) {
-//                createDevTools(getParentBrowser(), getClient(), windowHandle, true, isTransparent_,
-//                        null, getInspectAt());
-                createDevTools(getParentBrowser(), getClient(), windowHandle, true, true,
+                createDevTools(getParentBrowser(), getClient(), windowHandle, true, isTransparent_,
                         null, getInspectAt());
             } else {
-                createBrowser(getClient(), windowHandle, getUrl(), true, true, null,
+                createBrowser(getClient(), windowHandle, getUrl(), true, isTransparent_, null,
                         getRequestContext());
-//                createBrowser(getClient(), windowHandle, getUrl(), true, isTransparent_, null,
-//                        getRequestContext());
 
             }
-            // ===== MyCEF end =====
         } else {
             // OSR windows cannot be reparented after creation.
             setFocus(true);
