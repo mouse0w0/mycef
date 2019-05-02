@@ -1,0 +1,49 @@
+import org.gradle.internal.os.OperatingSystem
+
+plugins {
+    id 'java'
+}
+
+group 'com.github.mouse0w0'
+version '1.0.0'
+
+sourceCompatibility = targetCompatibility = 11
+
+project.ext.lwjglVersion = "3.2.1"
+
+switch (OperatingSystem.current()) {
+    case OperatingSystem.WINDOWS:
+        project.ext.lwjglNatives = "natives-windows"
+        break
+    case OperatingSystem.LINUX:
+        project.ext.lwjglNatives = "natives-linux"
+        break
+    case OperatingSystem.MAC_OS:
+        project.ext.lwjglNatives = "natives-macos"
+        break
+}
+
+repositories {
+    jcenter()
+    maven {
+        url 'https://jitpack.io'
+    }
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    compile "org.lwjgl:lwjgl:$lwjglVersion"
+    compile "org.lwjgl:lwjgl-glfw:$lwjglVersion"
+    compile "org.lwjgl:lwjgl-opengl:$lwjglVersion"
+    compile "org.lwjgl:lwjgl-stb:$lwjglVersion"
+    compile "org.lwjgl:lwjgl:$lwjglVersion:$lwjglNatives"
+    compile "org.lwjgl:lwjgl-glfw:$lwjglVersion:$lwjglNatives"
+    compile "org.lwjgl:lwjgl-opengl:$lwjglVersion:$lwjglNatives"
+    compile "org.lwjgl:lwjgl-stb:$lwjglVersion:$lwjglNatives"
+
+    compile 'org.joml:joml:1.9.12'
+
+    // =============TEST==============
+    testCompile 'org.junit.jupiter:junit-jupiter-engine:5.3.2'
+}
