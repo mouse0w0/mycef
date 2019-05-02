@@ -4,6 +4,11 @@
 
 package org.cef;
 
+import org.cef.callback.CefSchemeHandlerFactory;
+import org.cef.handler.CefAppHandler;
+import org.cef.handler.CefAppHandlerAdapter;
+
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -11,12 +16,6 @@ import java.io.FilenameFilter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-
-import org.cef.callback.CefSchemeHandlerFactory;
-import org.cef.handler.CefAppHandler;
-import org.cef.handler.CefAppHandlerAdapter;
 
 /**
  * Exposes static methods for managing the global CEF context.
@@ -149,8 +148,8 @@ public class CefApp extends CefAppHandlerAdapter {
         }
 
         // Execute on the AWT event dispatching thread.
-        try {
-            // ===== MyCEF begin =====
+        // ===== MyCEF begin =====
+//        try {
 //            Runnable r = new Runnable() {
 //                @Override
 //                public void run() {
@@ -163,10 +162,10 @@ public class CefApp extends CefAppHandlerAdapter {
 //                r.run();
 //            else
 //                SwingUtilities.invokeAndWait(r);
-            // ===== MyCEF end =====
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        // ===== MyCEF end =====
     }
 
     /**
@@ -251,12 +250,14 @@ public class CefApp extends CefAppHandlerAdapter {
             state_ = state;
         }
         // Execute on the AWT event dispatching thread.
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
+        // ===== MyCEF begin =====
+//        SwingUtilities.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
                 if (appHandler_ != null) appHandler_.stateHasChanged(state);
-            }
-        });
+//            }
+//        });
+        // ===== MyCEF end =====
     }
 
     /**
@@ -378,7 +379,7 @@ public class CefApp extends CefAppHandlerAdapter {
      */
     private final void initialize() {
         // Execute on the AWT event dispatching thread.
-        // ===== MyCEF begin =====
+        // =====  =====
         try {
 //            Runnable r = new Runnable() {
 //                @Override
@@ -433,14 +434,16 @@ public class CefApp extends CefAppHandlerAdapter {
         System.out.println("Cmd+Q termination request.");
         // Execute on the AWT event dispatching thread. Always call asynchronously
         // so the call stack has a chance to unwind.
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
+        // ===== MyCEF begin =====
+//        SwingUtilities.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
                 CefAppHandler handler =
                         (CefAppHandler) ((appHandler_ == null) ? this : appHandler_);
                 if (!handler.onBeforeTerminate()) dispose();
-            }
-        });
+//            }
+//        });
+        // ===== MyCEF end =====
     }
 
     /**
