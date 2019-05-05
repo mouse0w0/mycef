@@ -49,6 +49,7 @@ class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, BrowserEve
         renderer_.init(this);
         createBrowser(getClient(), 0, getUrl(), true, isTransparent_, null,
                 getRequestContext());
+        setFocus(true);
 //        createGLCanvas();
         // ===== MyCEF end =====
     }
@@ -75,6 +76,8 @@ class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, BrowserEve
     @Override
     public void resize(int width, int height) {
         browser_rect_.setBounds(0, 0, width, height);
+        component_.setBounds(browser_rect_);
+        component_.setVisible(true);
         wasResized(width, height);
     }
 
@@ -313,44 +316,48 @@ class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, BrowserEve
 
     @Override
     public void onMouseMove(int x, int y) {
-        SwingUtilities.invokeLater(() -> sendMouseEvent(
-                new MouseEvent(component_, MouseEvent.MOUSE_MOVED, 0, 0, x, y, 0, false)));
+        sendMouseEvent(
+                new MouseEvent(component_, MouseEvent.MOUSE_MOVED, 0, 0, x, y, 0, false));
     }
 
     @Override
-    public void onMouseButton(int x, int y, int mods, int button, boolean pressed, int clickCount) {
-        SwingUtilities.invokeLater(() -> sendMouseEvent(
-                new MouseEvent(component_, pressed ? MouseEvent.MOUSE_PRESSED : MouseEvent.MOUSE_RELEASED, 0, mods, x, y, clickCount, false, button)));
+    public void onMouseButton(int x, int y, int button, int mods, boolean pressed, int clickCount) {
+            sendMouseEvent(
+                    new MouseEvent(component_,
+                            pressed ? MouseEvent.MOUSE_PRESSED : MouseEvent.MOUSE_RELEASED,
+                            0, mods, x, y, clickCount, false, button + 1));
     }
 
     @Override
     public void onMouseEnter(int x, int y, boolean entered) {
-        SwingUtilities.invokeLater(() -> sendMouseEvent(
-                new MouseEvent(component_, entered ? MouseEvent.MOUSE_ENTERED : MouseEvent.MOUSE_EXITED, 0, 0, x, y, 0, false)));
-    }
-
-    @Override
-    public void onKeyTyped(char keyChar, int mods) {
-        SwingUtilities.invokeLater(() -> sendKeyEvent(new KeyEvent(component_, KeyEvent.KEY_TYPED, 0, mods, 0, keyChar)));
-    }
-
-    @Override
-    public void onKey(char keyChar, int mods, boolean pressed) {
-        SwingUtilities.invokeLater(() -> sendKeyEvent(
-                new KeyEvent(component_, pressed ? KeyEvent.KEY_PRESSED : KeyEvent.KEY_RELEASED, 0, mods, 0, keyChar)));
-
-    }
-
-    @Override
-    public void onKey(int keyCode, int mods, boolean pressed) {
-        SwingUtilities.invokeLater(() ->
-                sendKeyEvent(new KeyEvent(component_, pressed ? KeyEvent.KEY_PRESSED : KeyEvent.KEY_RELEASED, 0, mods, keyCode)));
+        sendMouseEvent(
+                new MouseEvent(component_,
+                        entered ? MouseEvent.MOUSE_ENTERED : MouseEvent.MOUSE_EXITED,
+                        0, 0, x, y, 0, false));
     }
 
     @Override
     public void onMouseWheel(int x, int y, int mods, int amount, int wheelRotation) {
-        SwingUtilities.invokeLater(() -> sendMouseWheelEvent(
-                new MouseWheelEvent(component_, MouseEvent.MOUSE_WHEEL, 0, mods, x, y, 0, false, MouseWheelEvent.WHEEL_UNIT_SCROLL, amount, wheelRotation)));
+        sendMouseWheelEvent(
+                new MouseWheelEvent(component_,
+                        MouseEvent.MOUSE_WHEEL, 0, mods, x, y, 0, false,
+                        MouseWheelEvent.WHEEL_UNIT_SCROLL, amount, wheelRotation));
+    }
+
+    @Override
+    public void onKeyTyped(char keyChar, int mods) {
+        sendKeyEvent(new KeyEvent(component_, KeyEvent.KEY_TYPED, 0, mods, 0, keyChar));
+    }
+
+    @Override
+    public void onKey(char keyChar, int mods, boolean pressed) {
+        sendKeyEvent(
+                new KeyEvent(component_, pressed ? KeyEvent.KEY_PRESSED : KeyEvent.KEY_RELEASED, 0, mods, 0, keyChar));
+    }
+
+    @Override
+    public void onKey(int keyCode, int mods, boolean pressed) {
+        sendKeyEvent(new KeyEvent(component_, pressed ? KeyEvent.KEY_PRESSED : KeyEvent.KEY_RELEASED, 0, mods, keyCode));
     }
 
     @Override
