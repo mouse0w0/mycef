@@ -56,13 +56,14 @@ public class OpenGLExample {
         glfwSetCursorPosCallback(window.getWindow(), (window1, xpos, ypos) -> {
             mouseX = (int) xpos;
             mouseY = (int) ypos;
-                handler.onMouseMove(mouseX, mouseY, 0, mouseY < 0);
+            handler.onMouseMove(mouseX, mouseY);
         });
-        glfwSetMouseButtonCallback(window.getWindow(), (window1, button, action, mods) -> handler.onMouseButton(mouseX, mouseY, button, action, mods != GLFW_RELEASE, 1));
-        glfwSetScrollCallback(window.getWindow(), (window1, xoffset, yoffset) -> handler.onMouseWheel(mouseX, mouseY, 0, 1, 0));
-        glfwSetKeyCallback(window.getWindow(), (window1, key, scancode, action, mods) -> handler.onKey(GLFW2AWTKeyMapping.mapToAWT(key), mods, action != GLFW_RELEASE));
+        glfwSetMouseButtonCallback(window.getWindow(), (window1, button, action, mods) -> handler.onMouseButton(mouseX, mouseY, button, mods, action != GLFW_RELEASE, 1));
+        glfwSetScrollCallback(window.getWindow(), (window1, xoffset, yoffset) -> handler.onMouseWheel(mouseX, mouseY, 0, 1, 1));
+        glfwSetKeyCallback(window.getWindow(), (window1, key, scancode, action, mods) -> handler.onKey((char) GLFW2AWTKeyMapping.mapToAWT(key), mods, action != GLFW_RELEASE));
         glfwSetCharCallback(window.getWindow(), (window1, codepoint) -> handler.onKeyTyped((char) codepoint, 0));
-//        glfwSetWindowFocusCallback(window.getWindow(), (window1, focused) -> handler.onFocus(focused));
+        glfwSetCursorEnterCallback(window.getWindow(), (window1, entered) -> handler.onMouseEnter(mouseX, mouseY, entered));
+        glfwSetWindowFocusCallback(window.getWindow(), (window1, focused) -> handler.onFocus(focused));
     }
 
     private void loop() {
@@ -70,7 +71,7 @@ public class OpenGLExample {
 
         GLBrowserRenderer glBrowserRenderer = new GLBrowserRenderer();
 
-        cefBrowser = MyCEF.createBrowser("https://www.baidu.com", false, glBrowserRenderer, null);
+        cefBrowser = MyCEF.createBrowser("https://www.bilibili.com", false, glBrowserRenderer, null);
         cefBrowser.resize(1280, 720);
         initEvent();
 
@@ -98,6 +99,8 @@ public class OpenGLExample {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> e.printStackTrace());
+
         new OpenGLExample().run();
     }
 }

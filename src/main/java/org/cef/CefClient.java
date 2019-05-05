@@ -384,9 +384,13 @@ public class CefClient extends CefClientHandler
     public boolean onSetFocus(final CefBrowser browser, FocusSource source) {
         if (browser == null) return false;
 
-        boolean alreadyHandled = false;
+        // ===== MyCEF begin =====
+        // Fixed StackOverflowError
+//        boolean alreadyHandled = false;
+        boolean alreadyHandled = true;
         if (focusHandler_ != null) alreadyHandled = focusHandler_.onSetFocus(browser, source);
         return alreadyHandled;
+        // ===== MyCEF end =====
     }
 
     @Override
