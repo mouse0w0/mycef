@@ -8,6 +8,7 @@ import java.awt.Component;
 import java.awt.Point;
 import java.util.Vector;
 
+import com.github.mouse0w0.mycef.api.BrowserEventHandler;
 import org.cef.CefClient;
 import org.cef.callback.CefPdfPrintCallback;
 import org.cef.callback.CefRunFileDialogCallback;
@@ -370,4 +371,6 @@ public interface CefBrowser {
     public void replaceMisspelling(String word);
 
     public void resize(int width, int height);
+
+    public BrowserEventHandler getBrowserEventHandler();
 }

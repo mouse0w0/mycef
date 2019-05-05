@@ -13,6 +13,8 @@ public final class MyCEF {
 
     private static String cefLibraryPath;
 
+    private static CefSettings cefSettings = new CefSettings();
+
     private static CefApp cefApp;
     private static CefClient cefClient;
 
@@ -33,14 +35,13 @@ public final class MyCEF {
                 injectJavaLibraryPath(cefLibraryPath);
             }
 
-            CefSettings cefSettings = new CefSettings();
             cefSettings.windowless_rendering_enabled = true;
-            cefSettings.background_color = cefSettings.new ColorType(0, 255, 255, 255);
-
             if (cefLibraryPath != null) {
                 cefSettings.locales_dir_path = cefLibraryPath + "\\locales";
-                cefSettings.cache_path = cefLibraryPath + "\\cache";
                 cefSettings.browser_subprocess_path = cefLibraryPath + "\\jcef_helper.exe";
+            }
+            if(cefSettings.background_color == null) {
+                cefSettings.background_color = cefSettings.new ColorType(255, 255, 255, 255);
             }
 
             cefApp = CefApp.getInstance(null, cefSettings);
@@ -48,6 +49,18 @@ public final class MyCEF {
         } catch (Exception e) {
             throw new MyCEFInitializationException("Cannot initialize MyCEF.", e);
         }
+    }
+
+    public static CefApp getCefApp() {
+        return cefApp;
+    }
+
+    public static CefClient getCefClient() {
+        return cefClient;
+    }
+
+    public static CefSettings getCefSettings() {
+        return cefSettings;
     }
 
     public static synchronized void shutdown() {

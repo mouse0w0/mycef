@@ -4,6 +4,7 @@
 
 package org.cef.browser;
 
+import com.github.mouse0w0.mycef.api.BrowserEventHandler;
 import com.github.mouse0w0.mycef.api.BrowserRenderer;
 import org.cef.CefClient;
 import org.cef.DummyComponent;
@@ -11,6 +12,9 @@ import org.cef.callback.CefDragData;
 import org.cef.handler.CefRenderHandler;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.nio.ByteBuffer;
 
 /**
@@ -18,7 +22,7 @@ import java.nio.ByteBuffer;
  * The visibility of this class is "package". To create a new
  * CefBrowser instance, please use CefBrowserFactory.
  */
-class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler {
+class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, BrowserEventHandler {
     // ===== MyCEF begin =====
     private BrowserRenderer renderer_;
     //    private CefRenderer renderer_;
@@ -71,6 +75,11 @@ class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler {
     public void resize(int width, int height) {
         browser_rect_.setBounds(0, 0, width, height);
         wasResized(width, height);
+    }
+
+    @Override
+    public BrowserEventHandler getBrowserEventHandler() {
+        return this;
     }
 
     @Override
@@ -299,5 +308,40 @@ class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler {
             // OSR windows cannot be reparented after creation.
             setFocus(true);
         }
+    }
+
+    @Override
+    public void onMouseMove(int x, int y, int mods, boolean left) {
+        sendMouseEvent(new MouseEvent(component_, left ? MouseEvent.MOUSE_EXITED : MouseEvent.MOUSE_MOVED, 0, mods, x, y, 0, false));
+    }
+
+    @Override
+    public void onMouseButton(int x, int y, int mods, int button, boolean pressed, int clickCount) {
+        sendMouseEvent(new MouseEvent(component_, pressed ? MouseEvent.MOUSE_PRESSED : MouseEvent.MOUSE_RELEASED, 0, mods, x, y, clickCount, false, button));
+    }
+
+    @Override
+    public void onKeyTyped(char keyChar, int mods) {
+        sendKeyEvent(new KeyEvent(component_, KeyEvent.KEY_TYPED, 0, mods, 0, keyChar));
+    }
+
+    @Override
+    public void onKey(char keyChar, int mods, boolean pressed) {
+        sendKeyEvent(new KeyEvent(component_, pressed ? KeyEvent.KEY_PRESSED : KeyEvent.KEY_RELEASED, 0, mods, 0, keyChar));
+    }
+
+    @Override
+    public void onKey(int keyCode, int mods, boolean pressed) {
+        sendKeyEvent(new KeyEvent(component_, pressed ? KeyEvent.KEY_PRESSED : KeyEvent.KEY_RELEASED, 0, mods, keyCode));
+    }
+
+    @Override
+    public void onMouseWheel(int x, int y, int mods, int amount, int wheelRotation) {
+        sendMouseWheelEvent(new MouseWheelEvent(component_, MouseEvent.MOUSE_WHEEL, 0, mods, x, y, 0, false, MouseWheelEvent.WHEEL_UNIT_SCROLL, amount, wheelRotation));
+    }
+
+    @Override
+    public void onFocus(boolean focused) {
+        setFocus(focused);
     }
 }
