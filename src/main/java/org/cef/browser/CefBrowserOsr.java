@@ -325,7 +325,7 @@ class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, BrowserEve
             sendMouseEvent(
                     new MouseEvent(component_,
                             pressed ? MouseEvent.MOUSE_PRESSED : MouseEvent.MOUSE_RELEASED,
-                            0, mods, x, y, clickCount, false, button + 1));
+                            0, mods, x, y, clickCount, false, button + 2));
     }
 
     @Override

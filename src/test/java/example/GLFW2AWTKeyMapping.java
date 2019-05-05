@@ -6,7 +6,7 @@ import static org.lwjgl.glfw.GLFW.*;
 public class GLFW2AWTKeyMapping {
 
     public static int mapToAWT(int glfwKeyCode) {
-        if (glfwKeyCode < 256)
+        if (glfwKeyCode < 128)
             return glfwKeyCode;
 
         switch (glfwKeyCode) {
@@ -88,6 +88,19 @@ public class GLFW2AWTKeyMapping {
                 return VK_CONTEXT_MENU;
             default:
                 return VK_UNDEFINED;
+        }
+    }
+
+    public static char mapToChar(int glfwKeyCode) {
+        switch (glfwKeyCode) {
+            case GLFW_KEY_ENTER:
+                return '\n';
+            case GLFW_KEY_BACKSPACE:
+                return '\b';
+            case GLFW_KEY_TAB:
+                return '\t';
+            default:
+                return '\0';
         }
     }
 }

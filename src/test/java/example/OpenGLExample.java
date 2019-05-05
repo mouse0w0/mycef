@@ -62,8 +62,13 @@ public class OpenGLExample {
                 handler.onMouseButton(mouseX, mouseY, button, mods, action != GLFW_RELEASE, 1));
         glfwSetScrollCallback(window.getWindow(), (window1, xoffset, yoffset) ->
                 handler.onMouseWheel(mouseX, mouseY, 0, 1, (int) yoffset * 100));
-        glfwSetKeyCallback(window.getWindow(), (window1, key, scancode, action, mods) ->
-                handler.onKey((char) GLFW2AWTKeyMapping.mapToAWT(key), mods, action != GLFW_RELEASE));
+        glfwSetKeyCallback(window.getWindow(), (window1, key, scancode, action, mods) -> {
+//            handler.onKey(GLFW2AWTKeyMapping.mapToAWT(key), mods, action != GLFW_RELEASE);
+            char c = GLFW2AWTKeyMapping.mapToChar(key);
+            if (action != GLFW_RELEASE && c != '\0') {
+                handler.onKeyTyped(c, 0);
+            }
+        });
         glfwSetCharCallback(window.getWindow(), (window1, codepoint) ->
                 handler.onKeyTyped((char) codepoint, 0));
         glfwSetCursorEnterCallback(window.getWindow(), (window1, entered) ->
