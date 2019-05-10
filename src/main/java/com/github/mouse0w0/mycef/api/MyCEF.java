@@ -72,9 +72,14 @@ public final class MyCEF {
         usrPaths.setAccessible(true);
 
         String[] oldPaths = (String[]) usrPaths.get(null);
-        String[] newPaths = new String[oldPaths.length + 1];
+        String[] newPaths;
+        if (oldPaths == null) {
+            newPaths = new String[1];
+        } else {
+            newPaths = new String[oldPaths.length + 1];
+            System.arraycopy(oldPaths, 0, newPaths, 1, oldPaths.length);
+        }
 
-        System.arraycopy(oldPaths, 0, newPaths, 1, oldPaths.length);
         newPaths[0] = path.replace('/', File.separatorChar);
         usrPaths.set(null, newPaths);
 
