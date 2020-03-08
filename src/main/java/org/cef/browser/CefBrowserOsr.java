@@ -14,6 +14,7 @@ import org.cef.handler.CefRenderHandler;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.nio.ByteBuffer;
@@ -50,6 +51,22 @@ class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, BrowserEve
         createBrowser(getClient(), 0, getUrl(), true, isTransparent_, null,
                 getRequestContext());
         setFocus(true);
+        component_.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                sendKeyEvent(e);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                sendKeyEvent(e);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                sendKeyEvent(e);
+            }
+        });
 //        createGLCanvas();
         // ===== MyCEF end =====
     }
@@ -346,18 +363,20 @@ class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, BrowserEve
 
     @Override
     public void onKeyTyped(char keyChar, int mods) {
-        sendKeyEvent(new KeyEvent(component_, KeyEvent.KEY_TYPED, 0, mods, 0, keyChar));
+        SwingUtilities.invokeLater(()->sendKeyEvent(
+                new KeyEvent(component_, KeyEvent.KEY_TYPED, 0, mods, 0, keyChar)));
     }
 
     @Override
     public void onKey(char keyChar, int mods, boolean pressed) {
-        sendKeyEvent(
-                new KeyEvent(component_, pressed ? KeyEvent.KEY_PRESSED : KeyEvent.KEY_RELEASED, 0, mods, 0, keyChar));
+        SwingUtilities.invokeLater(()->sendKeyEvent(
+                new KeyEvent(component_, pressed ? KeyEvent.KEY_PRESSED : KeyEvent.KEY_RELEASED, 0, mods, 0, keyChar)));
     }
 
     @Override
     public void onKey(int keyCode, int mods, boolean pressed) {
-        sendKeyEvent(new KeyEvent(component_, pressed ? KeyEvent.KEY_PRESSED : KeyEvent.KEY_RELEASED, 0, mods, keyCode));
+        SwingUtilities.invokeLater(()->sendKeyEvent(
+                new KeyEvent(component_, pressed ? KeyEvent.KEY_PRESSED : KeyEvent.KEY_RELEASED, 0, mods, keyCode)));
     }
 
     @Override

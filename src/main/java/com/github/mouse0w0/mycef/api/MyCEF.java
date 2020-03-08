@@ -38,7 +38,7 @@ public final class MyCEF {
             cefSettings.windowless_rendering_enabled = true;
             if (cefLibraryPath != null) {
                 cefSettings.locales_dir_path = cefLibraryPath + "\\locales";
-                cefSettings.browser_subprocess_path = cefLibraryPath + "\\jcef_helper.exe";
+//                cefSettings.browser_subprocess_path = cefLibraryPath + "\\jcef_helper.exe";
             }
             if(cefSettings.background_color == null) {
                 cefSettings.background_color = cefSettings.new ColorType(255, 255, 255, 255);

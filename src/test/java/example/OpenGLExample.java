@@ -6,6 +6,8 @@ import org.cef.browser.CefBrowser;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL;
 
+import java.awt.event.KeyEvent;
+import java.beans.EventHandler;
 import java.nio.file.Paths;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -64,9 +66,16 @@ public class OpenGLExample {
                 handler.onMouseWheel(mouseX, mouseY, 0, 1, (int) yoffset * 100));
         glfwSetKeyCallback(window.getWindow(), (window1, key, scancode, action, mods) -> {
 //            handler.onKey(GLFW2AWTKeyMapping.mapToAWT(key), mods, action != GLFW_RELEASE);
-            char c = GLFW2AWTKeyMapping.mapToChar(key);
-            if (action != GLFW_RELEASE && c != '\0') {
-                handler.onKeyTyped(c, 0);
+            if (action == GLFW_PRESS) {
+                handler.onKey(key, mods, true);
+            }
+//            char c = GLFW2AWTKeyMapping.mapToChar(key);
+            if (key == GLFW_KEY_BACKSPACE && action == GLFW_PRESS) {
+                handler.onKeyTyped('\b', 0);
+            }
+
+            if (action == GLFW_RELEASE) {
+                handler.onKey(key, mods, false);
             }
         });
         glfwSetCharCallback(window.getWindow(), (window1, codepoint) ->
@@ -82,7 +91,7 @@ public class OpenGLExample {
 
         GLBrowserRenderer glBrowserRenderer = new GLBrowserRenderer();
 
-        cefBrowser = MyCEF.createBrowser("https://www.bilibili.com", false, glBrowserRenderer, null);
+        cefBrowser = MyCEF.createBrowser("https://www.baidu.com", false, glBrowserRenderer, null);
         cefBrowser.resize(1280, 720);
         initEvent();
 
