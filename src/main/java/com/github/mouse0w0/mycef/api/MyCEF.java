@@ -22,7 +22,7 @@ public final class MyCEF {
         cefLibraryPath = path;
     }
 
-    public static CefBrowser createBrowser(String url, boolean isTransparent, BrowserRenderer renderer, CefRequestContext context) {
+    public static MyCefBrowser createBrowser(String url, boolean isTransparent, BrowserRenderer renderer, CefRequestContext context) {
         return cefClient.createBrowser(url, isTransparent, renderer, context);
     }
 

@@ -5,6 +5,7 @@
 package org.cef.browser;
 
 import com.github.mouse0w0.mycef.api.BrowserRenderer;
+import com.github.mouse0w0.mycef.api.MyCefBrowser;
 import org.cef.CefClient;
 
 /**
@@ -12,7 +13,7 @@ import org.cef.CefClient;
  */
 public class CefBrowserFactory {
     // ===== MyCEF begin =====
-    public static CefBrowser create(CefClient client, String url, boolean isTransparent, BrowserRenderer renderer, CefRequestContext context) {
+    public static MyCefBrowser create(CefClient client, String url, boolean isTransparent, BrowserRenderer renderer, CefRequestContext context) {
         return new CefBrowserOsr(client, url, isTransparent, renderer, context);
     }
 

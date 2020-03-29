@@ -2,6 +2,7 @@ package example;
 
 import com.github.mouse0w0.mycef.api.BrowserEventHandler;
 import com.github.mouse0w0.mycef.api.MyCEF;
+import com.github.mouse0w0.mycef.api.MyCefBrowser;
 import org.cef.browser.CefBrowser;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL;
@@ -19,7 +20,7 @@ public class OpenGLExample {
 
     private ShaderProgram shader;
 
-    private CefBrowser cefBrowser;
+    private MyCefBrowser cefBrowser;
 
     public void run() {
         try {

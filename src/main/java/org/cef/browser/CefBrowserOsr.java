@@ -6,6 +6,7 @@ package org.cef.browser;
 
 import com.github.mouse0w0.mycef.api.BrowserEventHandler;
 import com.github.mouse0w0.mycef.api.BrowserRenderer;
+import com.github.mouse0w0.mycef.api.MyCefBrowser;
 import org.cef.CefClient;
 import org.cef.DummyComponent;
 import org.cef.callback.CefDragData;
@@ -24,8 +25,8 @@ import java.nio.ByteBuffer;
  * The visibility of this class is "package". To create a new
  * CefBrowser instance, please use CefBrowserFactory.
  */
-class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, BrowserEventHandler {
-    // ===== MyCEF begin =====
+// ===== MyCEF begin =====
+class CefBrowserOsr extends CefBrowser_N implements MyCefBrowser, CefRenderHandler, BrowserEventHandler {
     private BrowserRenderer renderer_;
     //    private CefRenderer renderer_;
 //    private GLCanvas canvas_;
@@ -307,7 +308,6 @@ class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, BrowserEve
         // TODO(JCEF) Prepared for DnD support using OSR mode.
     }
 
-
     private void createBrowserIfRequired(boolean hasParent) {
         long windowHandle = 0;
         if (hasParent) {
@@ -323,7 +323,6 @@ class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, BrowserEve
             } else {
                 createBrowser(getClient(), windowHandle, getUrl(), true, isTransparent_, null,
                         getRequestContext());
-
             }
         } else {
             // OSR windows cannot be reparented after creation.
@@ -339,10 +338,10 @@ class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, BrowserEve
 
     @Override
     public void onMouseButton(int x, int y, int button, int mods, boolean pressed, int clickCount) {
-            sendMouseEvent(
-                    new MouseEvent(component_,
-                            pressed ? MouseEvent.MOUSE_PRESSED : MouseEvent.MOUSE_RELEASED,
-                            0, mods, x, y, clickCount, false, button + 2));
+        sendMouseEvent(
+                new MouseEvent(component_,
+                        pressed ? MouseEvent.MOUSE_PRESSED : MouseEvent.MOUSE_RELEASED,
+                        0, mods, x, y, clickCount, false, button + 2));
     }
 
     @Override
@@ -363,19 +362,19 @@ class CefBrowserOsr extends CefBrowser_N implements CefRenderHandler, BrowserEve
 
     @Override
     public void onKeyTyped(char keyChar, int mods) {
-        SwingUtilities.invokeLater(()->sendKeyEvent(
+        SwingUtilities.invokeLater(() -> sendKeyEvent(
                 new KeyEvent(component_, KeyEvent.KEY_TYPED, 0, mods, 0, keyChar)));
     }
 
     @Override
     public void onKey(char keyChar, int mods, boolean pressed) {
-        SwingUtilities.invokeLater(()->sendKeyEvent(
+        SwingUtilities.invokeLater(() -> sendKeyEvent(
                 new KeyEvent(component_, pressed ? KeyEvent.KEY_PRESSED : KeyEvent.KEY_RELEASED, 0, mods, 0, keyChar)));
     }
 
     @Override
     public void onKey(int keyCode, int mods, boolean pressed) {
-        SwingUtilities.invokeLater(()->sendKeyEvent(
+        SwingUtilities.invokeLater(() -> sendKeyEvent(
                 new KeyEvent(component_, pressed ? KeyEvent.KEY_PRESSED : KeyEvent.KEY_RELEASED, 0, mods, keyCode)));
     }
 

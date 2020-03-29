@@ -24,7 +24,7 @@ public abstract class CefAppHandlerAdapter implements CefAppHandler {
     @Override
     public void onBeforeCommandLineProcessing(String process_type, CefCommandLine command_line) {
         if (process_type.isEmpty() && args_ != null) {
-            // Forward switches and arguments from Java to MyCEF
+            // Forward switches and arguments from Java to Cef
             boolean parseSwitchesDone = false;
             for (String arg : args_) {
                 if (parseSwitchesDone || arg.length() < 2) {
