@@ -12,12 +12,11 @@ import org.cef.DummyComponent;
 import org.cef.callback.CefDragData;
 import org.cef.handler.CefRenderHandler;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 
 /**
@@ -52,22 +51,22 @@ class CefBrowserOsr extends CefBrowser_N implements MyCefBrowser, CefRenderHandl
         createBrowser(getClient(), 0, getUrl(), true, isTransparent_, null,
                 getRequestContext());
         setFocus(true);
-        component_.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                sendKeyEvent(e);
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                sendKeyEvent(e);
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                sendKeyEvent(e);
-            }
-        });
+//        component_.addKeyListener(new KeyListener() {
+//            @Override
+//            public void keyTyped(KeyEvent e) {
+//                sendKeyEvent(e);
+//            }
+//
+//            @Override
+//            public void keyPressed(KeyEvent e) {
+//                sendKeyEvent(e);
+//            }
+//
+//            @Override
+//            public void keyReleased(KeyEvent e) {
+//                sendKeyEvent(e);
+//            }
+//        });
 //        createGLCanvas();
         // ===== MyCEF end =====
     }
@@ -362,20 +361,37 @@ class CefBrowserOsr extends CefBrowser_N implements MyCefBrowser, CefRenderHandl
 
     @Override
     public void onKeyTyped(char keyChar, int mods) {
-        SwingUtilities.invokeLater(() -> sendKeyEvent(
-                new KeyEvent(component_, KeyEvent.KEY_TYPED, 0, mods, 0, keyChar)));
+        sendKeyEvent(new KeyEvent(component_, KeyEvent.KEY_TYPED, 0, mods, 0, keyChar));
+//        SwingUtilities.invokeLater(() -> sendKeyEvent(
+//                new KeyEvent(component_, KeyEvent.KEY_TYPED, 0, mods, 0, keyChar)));
     }
 
     @Override
-    public void onKey(char keyChar, int mods, boolean pressed) {
-        SwingUtilities.invokeLater(() -> sendKeyEvent(
-                new KeyEvent(component_, pressed ? KeyEvent.KEY_PRESSED : KeyEvent.KEY_RELEASED, 0, mods, 0, keyChar)));
+    public void onKey(int keyCode, int scancode, int mods, boolean pressed) {
+        KeyEvent keyEvent = new KeyEvent(component_, pressed ? KeyEvent.KEY_PRESSED : KeyEvent.KEY_RELEASED, 0, mods, keyCode);
+        sendKeyEvent(setScanCode(keyEvent, scancode));
+//        SwingUtilities.invokeLater(() -> sendKeyEvent(setScanCode(keyEvent, scancode)));
     }
 
-    @Override
-    public void onKey(int keyCode, int mods, boolean pressed) {
-        SwingUtilities.invokeLater(() -> sendKeyEvent(
-                new KeyEvent(component_, pressed ? KeyEvent.KEY_PRESSED : KeyEvent.KEY_RELEASED, 0, mods, keyCode)));
+    private static Field field_KeyEvent_scancode;
+
+    static {
+        try {
+            Class<KeyEvent> class_KeyEvent = KeyEvent.class;
+            field_KeyEvent_scancode = class_KeyEvent.getDeclaredField("scancode");
+            field_KeyEvent_scancode.setAccessible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static KeyEvent setScanCode(KeyEvent event, int scancode) {
+        try {
+            field_KeyEvent_scancode.set(event, scancode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return event;
     }
 
     @Override

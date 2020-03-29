@@ -8,6 +8,7 @@ import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.beans.EventHandler;
 import java.nio.file.Paths;
 
@@ -35,7 +36,6 @@ public class OpenGLExample {
             window.dispose();
         } finally {
             glfwTerminate();
-            glfwSetErrorCallback(null).free();
         }
     }
 
@@ -66,21 +66,10 @@ public class OpenGLExample {
         glfwSetScrollCallback(window.getWindow(), (window1, xoffset, yoffset) ->
                 handler.onMouseWheel(mouseX, mouseY, 0, 1, (int) yoffset * 100));
         glfwSetKeyCallback(window.getWindow(), (window1, key, scancode, action, mods) -> {
-//            handler.onKey(GLFW2AWTKeyMapping.mapToAWT(key), mods, action != GLFW_RELEASE);
-            if (action == GLFW_PRESS) {
-                handler.onKey(key, mods, true);
-            }
-//            char c = GLFW2AWTKeyMapping.mapToChar(key);
-            if (key == GLFW_KEY_BACKSPACE && action == GLFW_PRESS) {
-                handler.onKeyTyped('\b', 0);
-            }
-
-            if (action == GLFW_RELEASE) {
-                handler.onKey(key, mods, false);
-            }
+            handler.onKey(key, scancode, mods, action != GLFW_RELEASE);
         });
-        glfwSetCharCallback(window.getWindow(), (window1, codepoint) ->
-                handler.onKeyTyped((char) codepoint, 0));
+        glfwSetCharModsCallback(window.getWindow(), (window1, codepoint, mods) ->
+                handler.onKeyTyped((char) codepoint, mods));
         glfwSetCursorEnterCallback(window.getWindow(), (window1, entered) ->
                 handler.onMouseEnter(mouseX, mouseY, entered));
 //        glfwSetWindowFocusCallback(window.getWindow(), (window1, focused) ->

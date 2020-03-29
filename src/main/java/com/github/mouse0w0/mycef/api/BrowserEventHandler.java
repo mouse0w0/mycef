@@ -12,9 +12,7 @@ public interface BrowserEventHandler {
 
     void onKeyTyped(char keyChar, int mods);
 
-    void onKey(char keyChar, int mods, boolean pressed);
-
-    void onKey(int keyCode, int mods, boolean pressed);
+    void onKey(int keyCode, int scancode, int mods, boolean pressed);
 
     void onFocus(boolean focused);
 }
